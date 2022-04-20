@@ -2,3 +2,35 @@
 
 A handheld device for playing Game Lab games. In order to get a Beaker you have to contribute a quality game to the Beaker game library. Like a Gameboy you can only get by particpating in building.
 
+# Raspberry Pi Pico, rp2040
+
+We're planning on using this chip.
+
+Here is a [pinout diagram](https://datasheets.raspberrypi.com/pico/Pico-R3-A4-Pinout.pdf).
+
+# Hooking Up the Screen, ST7735
+
+We're planning on using [this screen](https://learn.adafruit.com/1-8-tft-display/breakout-pinouts).
+
+This [video](https://www.youtube.com/watch?v=9rDXPcwuXLA) and [repo](https://github.com/stechiez/raspberrypi-pico) were very helpful in setting up the screen:
+
+It uses this [version](https://www.banggood.in/1_44-Inch-TFT-SPI-Serial-Port-LCD-Module-Colorful-Screen-Display-Module-LCD-Screen-ST7735-Drive-p-1903603.html?warehouse=CN&ID=0&p=09122211383184201706&custlinkid=1784032&cur_warehouse=CN) of the screen. 
+
+This [c library](https://github.com/bablokb/pico-st7735) may also be relevant.
+
+Naming conventions vary slightly the below snippet from [this thread](https://forums.raspberrypi.com/viewtopic.php?t=212810) could help clear up some confusion here:
+
+```
+LED - GPIO18 - pin 12
+SCK - GPIO11 - pin 23
+SDA (MOSI) - GPIO10 - pin 19
+A0 (D/C) - GPIO24 - pin 18
+RESET - GPIO25 - pin 22
+CS - GPIO8 - pin 24
+GND - pin 6
+VCC - pin 2
+```
+
+Other possibly useful links:
+
+- https://helloraspberrypi.blogspot.com/2021/02/raspberry-pi-picomicropython-st7789-spi.html
