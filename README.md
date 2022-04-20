@@ -1,3 +1,5 @@
+![image](https://user-images.githubusercontent.com/27078897/164332709-5167cbc6-32a4-49e7-8eef-5b4c7a7e7dd5.png)
+
 # Game Lab Beaker
 
 A handheld device for playing Game Lab games. In order to get a Beaker you have to contribute a quality game to the Beaker game library. Like a Gameboy you can only get by particpating in building.
