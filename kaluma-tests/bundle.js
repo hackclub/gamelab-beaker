@@ -237,7 +237,7 @@ setWatch(
   },
   A,
   FALLING,
-  5
+  // 5
 ); 
 
 var options = { // ST7735R 1.8"
@@ -253,6 +253,7 @@ var options = { // ST7735R 1.8"
 const spiOptions = {
   sck: 10,
   mosi: 11,
+  baudrate: 20000000 // default: 3000000
 }
 
 const spi = board.spi(1, spiOptions);
@@ -264,12 +265,12 @@ const color = gc.color16(255, 100, 255);
 
 
 let delta = 5;
-// setInterval(() => {
-//   gc.fillScreen(color);
-//   // gc.drawRect(0, 0, size, 160);
-//   gc.drawCircle(128/2, 160/2, size);
-//   gc.display();
-// }, 10);
+setInterval(() => {
+  gc.fillScreen(color);
+  // gc.drawRect(0, 0, size, 160);
+  gc.drawCircle(128/2, 160/2, size);
+  gc.display();
+}, 1000/30);
 
 
 // gc.display(); // must call if buffered graphic context
