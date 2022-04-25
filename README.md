@@ -47,7 +47,11 @@ Which uses [Jerryscript](https://jerryscript.net/).
 
 It has a [nice web IDE](https://kalumajs.org/ide/).
 
+# Wiping Flash Memory
 
+Load `flash_nuke.uf2` onto the Pico.
+
+Can also refer to [this example](https://github.com/raspberrypi/pico-examples/blob/master/flash/nuke/nuke.c) from Raspberry Pi.
 
 
 
