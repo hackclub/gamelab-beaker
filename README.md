@@ -36,3 +36,18 @@ VCC - pin 2
 Other possibly useful links:
 
 - https://helloraspberrypi.blogspot.com/2021/02/raspberry-pi-picomicropython-st7789-spi.html
+
+# Kuluma
+
+Instructions on how to build Kuluma.
+
+https://github-wiki-see.page/m/kaluma-project/kaluma/wiki/Build
+
+Which uses [Jerryscript](https://jerryscript.net/).
+
+It has a [nice web IDE](https://kalumajs.org/ide/).
+
+
+
+
+
