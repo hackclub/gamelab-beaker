@@ -10,27 +10,12 @@ const DOWN = 12;
 const LEFT = 11;
 const RIGHT = 10;
 
-
-// const a = pinMode(A, INPUT_PULLUP);
-// pinMode(Input.B, INPUT_PULLUP);
-// pinMode(Input.UP, INPUT_PULLUP);
-// pinMode(Input.DOWN, INPUT_PULLUP);
-// pinMode(Input.LEFT, INPUT_PULLUP);
-// pinMode(Input.RIGHT, INPUT_PULLUP);
-
-// var options = { // ST7735R 1.44"
-//   dc: 21,
-//   rst: 22,
-//   cs: 24
-// };
-
 const led = pinMode(25, OUTPUT);
 
 let size = 10;
 
 
 digitalToggle(25)
-// digitalWrite(25, LOW); // Set the pin 1 to HIGH.
 
 pinMode(A, INPUT_PULLUP);
 
@@ -75,7 +60,7 @@ setInterval(() => {
   // gc.drawRect(0, 0, size, 160);
   gc.drawCircle(128/2, 160/2, size);
   gc.display();
-}, 1000/30);
+}, 1000/20);
 
 
 // gc.display(); // must call if buffered graphic context
