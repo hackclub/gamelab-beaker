@@ -4,6 +4,15 @@
 
 A handheld device for playing Game Lab games. In order to get a Beaker you have to contribute a quality game to the Beaker game library. Like a Gameboy you can only get by participating in building.
 
+# Parts
+
+- Raspberry Pi Pico RP2040 PID: 4864
+- 1.8" Color TFT LCD display with MicroSD Card Breakout - ST7735R PID: 358
+- Adafruit I2S 3W Class D Amplifier Breakout - MAX98357A
+- Mini Metal Speaker w/ Wires - 8 ohm 0.5W PID: 1890
+- PowerBoost 1000 Charger - Rechargeable 5V Lipo USB Boost @ 1A - 1000C
+- plus asorted switches and buttons
+
 # Raspberry Pi Pico, rp2040
 
 We're planning on using this chip.
