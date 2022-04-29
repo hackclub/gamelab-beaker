@@ -1,5 +1,4 @@
 from ST7735 import TFT
-from sysfont import sysfont
 from machine import SPI, Pin, Timer
 import time
 import math
