@@ -1,27 +1,33 @@
-from ST7735 import TFT
-from sysfont import sysfont
-from machine import SPI, Pin, Timer
+from machine import Pin, Timer
 import time
 import math
 
-spi = SPI(1, baudrate=20000000, polarity=0, phase=0,
-          sck=Pin(10), mosi=Pin(11), miso=None)
-tft=TFT(spi,16,17,18)
-tft.initr()
-tft.rgb(True)
-
 led = Pin(25, Pin.OUT);
-button = Pin(0, Pin.IN, Pin.PULL_UP)
 
+buttons = [(i, Pin(i, Pin.IN, Pin.PULL_UP)) for i in [0, 1, 2, 3, 4, 5]]
+blinks = 0
 
 led.value(0)
-def checkButton():
-    if not button.value():
-        led.value(1)
-    else:
-        led.value(0)
 
-tim = Timer(period=5, mode=Timer.PERIODIC, callback=lambda t:checkButton())
+def input():
+    global blinks
+    for i, btn in buttons:
+        if not btn.value():
+            blinks += (i+1)*2
+
+def blink():
+    global blinks
+
+    led.value(0)
+
+    if blinks > 0:
+        blinks -= 1
+        if blinks % 2:
+            led.value(1)
 
 
-print("running")
+tim = Timer(period=500, mode=Timer.PERIODIC, callback=lambda t:input())
+tim = Timer(period=250, mode=Timer.PERIODIC, callback=lambda t:blink())
+
+
+print("running v0.0.9")
