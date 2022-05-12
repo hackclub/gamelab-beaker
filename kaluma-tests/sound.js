@@ -93,31 +93,75 @@ const tones = {
 "D#8": 4978
 };
 
-const pwm = new PWM(0, 1000, 0.5); // Create the PWM instance with pin 1
-pwm.start(); // Generate PWM signal
+const pwm = new PWM(0, 0, 0.5); // Create the PWM instance with pin 1
+// pwm.start(); // Generate PWM signal
 
-function playSong(song) {
+delay(1000);
+
+function playSongAscii(song) {
   let startTime = millis();
 
   let noteIndex = 0;
+  
 
   while (noteIndex < song.length) {
     const elapsedTime = millis() - startTime;
-    if (elapsedTime > 500) {
-      const note = song[noteIndex];
+    
+    
+    const note = song[noteIndex];
+    const duration = song[noteIndex + 1] * 1000;
+
+    if (elapsedTime > duration) {
       
       if (note !== ";") {
         const f = tones[note];
+        console.log(f);
+        // pwm.stop();
         pwm.setFrequency(f);
+        pwm.start();
       }
 
-      noteIndex++;
+      noteIndex += 2;
       startTime = millis();
     }
   }
+  
+}
+
+function playSongMidi(song) {
+  let startTime = millis();
+
+  let noteIndex = 0;
+  
+
+  while (noteIndex < song.length) {
+    const elapsedTime = millis() - startTime;
+    
+    const note = song[noteIndex];
+    const duration = song[noteIndex + 1] * 1000;
+
+    if (elapsedTime > duration) {
+      
+      const f = 2**((note-69)/12)*440;
+      pwm.stop();
+      pwm.setFrequency(f);
+      pwm.start();
+
+      noteIndex += 2;
+      startTime = millis();
+    }
+  }
+  
 
 }
 
-playSong(["D4","A4","C5","B4","C4"]);
+for (let i = 0; i < 4; i++) {
+  playSongAscii(["A4", 0.5]);
+  // delay(500);
+ // playSongMidi([69, 0.5]);
+  // delay(500);
+}
+
+
 pwm.stop(); // Stop PWM signal
 pwm.close(); // Close PWM port.
