@@ -1,4 +1,4 @@
-BOARD_PORT="/dev/cu.usbmodem11301"
+BOARD_PORT="/dev/tty.usbmodem1422101"
 
 REMOVE="rm -rf /pyboard/*"
 COPY="cp *.py /pyboard"
