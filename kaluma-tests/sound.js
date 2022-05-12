@@ -96,72 +96,42 @@ const tones = {
 const pwm = new PWM(0, 0, 0.5); // Create the PWM instance with pin 1
 // pwm.start(); // Generate PWM signal
 
-delay(1000);
-
-function playSongAscii(song) {
-  let startTime = millis();
-
-  let noteIndex = 0;
+async function playSongAscii(song) {
+  pwm.start();
   
-
-  while (noteIndex < song.length) {
-    const elapsedTime = millis() - startTime;
-    
-    
-    const note = song[noteIndex];
-    const duration = song[noteIndex + 1] * 1000;
-
-    if (elapsedTime > duration) {
-      
-      if (note !== ";") {
-        const f = tones[note];
-        console.log(f);
-        // pwm.stop();
-        pwm.setFrequency(f);
-        pwm.start();
-      }
-
-      noteIndex += 2;
-      startTime = millis();
-    }
+  for (let i = 0; i < song.length; i += 2) {
+    const note = song[i];
+    const duration = song[i + 1] * 1000;
+    const f = tones[note];
+    pwm.setFrequency(f);
+    let last = millis();
+    while ((millis() - last) < duration) {}
   }
   
+  pwm.stop();
 }
 
-function playSongMidi(song) {
-  let startTime = millis();
-
-  let noteIndex = 0;
+async function playSongMidi(song) {
+  pwm.start();
   
-
-  while (noteIndex < song.length) {
-    const elapsedTime = millis() - startTime;
-    
-    const note = song[noteIndex];
-    const duration = song[noteIndex + 1] * 1000;
-
-    if (elapsedTime > duration) {
-      
-      const f = 2**((note-69)/12)*440;
-      pwm.stop();
-      pwm.setFrequency(f);
-      pwm.start();
-
-      noteIndex += 2;
-      startTime = millis();
-    }
+  for (let i = 0; i < song.length; i += 2) {
+    const note = song[i];
+    const duration = song[i + 1] * 1000;
+    const f = 2**((note-69)/12)*440;
+    tone(0, f, { inversion: 1 });
+    // pwm.setFrequency(f);
+    let last = millis();
+    while ((millis() - last) < duration) {}
   }
   
-
+  pwm.stop();
 }
 
-for (let i = 0; i < 4; i++) {
-  playSongAscii(["A4", 0.5]);
-  // delay(500);
- // playSongMidi([69, 0.5]);
-  // delay(500);
+for (let i = 0; i < 2; i++) {
+  /// playSongAscii(["A4", 0.5, "A4", 0.5, "A4", 0.5]);
+  playSongMidi([64.4, 0.5, 69, 0.5, 40, 0.5]);
 }
+console.log("hello");
 
 
-pwm.stop(); // Stop PWM signal
 pwm.close(); // Close PWM port.
