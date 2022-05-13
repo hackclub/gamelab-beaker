@@ -51,7 +51,7 @@ const bkr = (() => {
 		for (let y = 0; y < h; y++) {
 			let i = (y*w + x);
 			const [r, g, b, a] = pixels.slice(i*4, (i + 1)*4);
-			// if (a < 255) continue;
+			if (a < 255) continue;
 			const col = gc.color16(b, g+5, r);
 			bytes[i*2+0] = col >> 8;
 			bytes[i*2+1] = col;
