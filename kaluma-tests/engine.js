@@ -7,7 +7,20 @@ let img = { data: new Uint8Array(0), width: 0, height: 0 };
 let currentLevel = [];
 let maxTileDim;
 let zOrder = [];
+let solids = [];
 function clear() { currentLevel = []; }
+
+const getGrid = exports.getGrid = () => {
+	const overlaps = {};
+	const tiles = currentLevel.map(tile => [ `${tile.x},${tile.y}`, tile ]);
+	tiles.forEach( tile => {
+		const [ key, data ] = tile;
+		if (key in overlaps) overlaps[key].push(data);
+		else overlaps[key] = [data];
+	});
+
+	return overlaps;
+}
 
 const canMoveToPush = (tile, dx, dy) => {
 	const grid = getGrid();
@@ -95,9 +108,9 @@ class Tile {
 
 }
 
-exports.getAll = function getAll(type) {
-	return currentLevel.find(t => t.type === type);
-}
+exports.getTile = type => currentLevel.find(t => t.type === type), // **
+exports.getAllTiles = type => currentLevel.filter(t => t.type === type), // **
+
 exports.addTile = function addTile(x, y, type) { // could take array
 	// if (type === ".") 
 
@@ -183,7 +196,7 @@ setInterval(() => {
       .forEach(tile => {
 
 		sprdraw(tile.img.data, tile.img.width, tile.img.height,
-		        screen, tile.x, tile.y);
+		        screen, tile.x*32, tile.y*32);
       });
 
 	fillImage(0, 0, width, height, new Uint8Array(screen.buffer));

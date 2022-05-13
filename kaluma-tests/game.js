@@ -3,8 +3,9 @@
 // const canvas = document.querySelector(".minimal");
 
 const {
-  getAll,    addTile,   onInput,   
-  setScreenSize, setLegend, setMap,      sprite
+  addTile,       onInput,     sprite,
+  setScreenSize, setLegend,   setMap,
+  getTile,       getAllTiles,
 } = require("./engine.js");
 
 setScreenSize(500, 500*.8)
@@ -36,9 +37,7 @@ setMap(`
 ...         
 `)
 
-addTile(4, 4, "p");
-const log = x => (console.log(x), x);
-let player = log(getAll("p")[0]);
+let player = getTile("p");
 
 onInput("up", _ => player.y -= 1)
 onInput("down", _ => player.y += 1)
