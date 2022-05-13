@@ -36,8 +36,9 @@ setMap(`
 ...         
 `)
 
-let player = getAll("p")[0];
 addTile(4, 4, "p");
+const log = x => (console.log(x), x);
+let player = log(getAll("p")[0]);
 
 onInput("up", _ => player.y -= 1)
 onInput("down", _ => player.y += 1)
