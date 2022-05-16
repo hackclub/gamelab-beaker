@@ -8,7 +8,14 @@ let currentLevel = [];
 let maxTileDim;
 let zOrder = [];
 let solids = [];
+let pushable = {};
+let afterInputFn = () => {};
 function clear() { currentLevel = []; }
+
+exports.afterInput = fn => afterInputFn = fn;
+exports.setSolids = arr => solids = arr;
+exports.setZOrder = arr => zOrder = arr;
+exports.setPushables = obj => pushable = obj;
 
 const getGrid = exports.getGrid = () => {
 	const overlaps = {};
@@ -57,6 +64,42 @@ const canMoveToPush = (tile, dx, dy) => {
 	}
 
 	return canMove;
+}
+
+const swap = exports.swap = (arr, newTypes) => { // swap could do multiple
+	if (typeof arr === "string") arr = [ arr ];
+	if (typeof newTypes === "string") newTypes = [ newTypes ];
+
+	const grid = getGrid();
+
+	let matched = false;
+	let length = 0;
+
+	Object.keys(grid).forEach(k => {
+		const cell = grid[k];
+		const typesInCell = cell.map(tile => tile.type);
+
+		const matches = [];
+
+		arr.forEach(t => {
+			const index = typesInCell.indexOf(t);
+			if (index !== -1 && !matches.includes(index)) {
+				matches.push(index);
+			} 
+		});
+
+		if (matches.length === arr.length) {
+			matches.forEach(i => cell[i].remove());
+			const [ x, y ] = k.split(",").map(Number);
+
+			newTypes.forEach(t => addTile(x, y, t));
+
+			matched = true;
+			length++;
+		}
+	})
+
+	return length;
 }
 
 class Tile {
@@ -109,16 +152,16 @@ class Tile {
 }
 
 exports.getTile = type => currentLevel.find(t => t.type === type), // **
-exports.getAllTiles = type => currentLevel.filter(t => t.type === type), // **
+exports.getAllTiles = type => currentLevel.filter(t => t.type === type); // **
 
-exports.addTile = function addTile(x, y, type) { // could take array
+const addTile = exports.addTile = (x, y, type) => { // could take array
 	// if (type === ".") 
 
 	const tile = new Tile(x, y, type);
 	currentLevel.push(tile);
 
 	return tile;
-}
+};
 
 
 const dpad = {
@@ -161,7 +204,9 @@ class ImageData {
 				let i = (y*w + x);
 				const [r, g, b, a] = pixels.slice(i*4, (i + 1)*4);
 				if (a < 255) continue;
-				const col = gc.color16(b, g+5, r);
+				const col = gc.color16(Math.max(b, 5),
+									   Math.max(g, 5),
+									   Math.max(r, 5));
 				bytes[i*2+0] = col >> 8;
 				bytes[i*2+1] = col;
 			}
@@ -188,6 +233,7 @@ setInterval(() => {
 		if (handler && btn.last != now && !(btn.last = now))
 			handler();
 	}
+	afterInputFn();
 
 	rfill(screen, gc.color16(255, 255, 255), width*height);
 
@@ -196,7 +242,7 @@ setInterval(() => {
       .forEach(tile => {
 
 		sprdraw(tile.img.data, tile.img.width, tile.img.height,
-		        screen, tile.x*32, tile.y*32);
+		        screen, tile.y*16, tile.x*16);
       });
 
 	fillImage(0, 0, width, height, new Uint8Array(screen.buffer));
@@ -210,7 +256,7 @@ exports.sprite = function sprite(string) { // returns image data
 	if (!isRect) console.error("Level must be rect.");
 	const width = rows[0].length;
 	const height = rows.length;
-	const data = new Uint8ClampedArray(width*height*4);
+	const data = new Uint8ClampedArray(16*16*4);
 
 	const colors = {
 		"0": [0, 0, 0, 255],
@@ -222,8 +268,8 @@ exports.sprite = function sprite(string) { // returns image data
 	}
 
 	const chars = string.split("").filter(x => x.match(/\S/));
-	for (let i = 0; i < width*height; i++) {
-		const type = chars[i];
+	for (let i = 0; i < 16*16; i++) {
+		const type = chars[i % (width*height)];
 
 		if (!(type in colors)) console.error("unknown color:", type);
 
@@ -234,7 +280,7 @@ exports.sprite = function sprite(string) { // returns image data
 		data[i*4 + 3] = a;
 	}
 
-	const result = new ImageData(data, width, height);
+	const result = new ImageData(data, 16, 16);
 
 	return img = result;
 };
