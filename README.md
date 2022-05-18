@@ -16,16 +16,16 @@ https://github.com/kaluma-project/kaluma
 ## Upload Flow
 Similar to [Kaluma's web IDE](https://kalumajs.org/ide/), one will be able to upload their games directly to the device through a web interface. That will be on the Game Lab repo.
 
-# The Repo
+## The Repo
 We've been testing various runtimes and their hardware drivers as we make sure all of our components work and are configured correctly, hence `micropython_tests/` and `kaluma-tests/`. The file extension for the executables which run on these devices is `.uf2`, the `uf2/` folder contains the kaluma and micropython runtimes we've used to run the code in their respective files. This folder also contains `flash_nuke.uf2` which was compiled from a small C program designed to wipe the persistent memory on the chip, which is useful for recoverring from invalid states.
 
 
 
 
-## Fear all ye who enter here
+# Fear all ye who enter here
 The remainder of the README is used for note taking, and is not intended to be particularly presentable.
 
-# Parts
+### Parts
 
 - Raspberry Pi Pico RP2040 PID: 4864
 - 1.8" Color TFT LCD display with MicroSD Card Breakout - ST7735R PID: 358
@@ -34,13 +34,13 @@ The remainder of the README is used for note taking, and is not intended to be p
 - PowerBoost 1000 Charger - Rechargeable 5V Lipo USB Boost @ 1A - 1000C
 - plus asorted switches and buttons
 
-# Raspberry Pi Pico, rp2040
+### Raspberry Pi Pico, rp2040
 
 We're planning on using this chip.
 
 Here is a [pinout diagram](https://datasheets.raspberrypi.com/pico/Pico-R3-A4-Pinout.pdf).
 
-# Hooking Up the Screen, ST7735
+### Hooking Up the Screen, ST7735
 
 We're planning on using [this screen](https://learn.adafruit.com/1-8-tft-display/breakout-pinouts).
 
@@ -67,7 +67,7 @@ Other possibly useful links:
 
 - https://helloraspberrypi.blogspot.com/2021/02/raspberry-pi-picomicropython-st7789-spi.html
 
-# Kuluma
+### Kuluma
 
 Instructions on how to build Kuluma.
 
@@ -77,7 +77,7 @@ Which uses [Jerryscript](https://jerryscript.net/).
 
 It has a [nice web IDE](https://kalumajs.org/ide/).
 
-# Wiping Flash Memory
+### Wiping Flash Memory
 
 Load `flash_nuke.uf2` onto the Pico.
 
