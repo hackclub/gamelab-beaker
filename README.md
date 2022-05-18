@@ -1,16 +1,13 @@
 ![image](https://user-images.githubusercontent.com/27078897/164332709-5167cbc6-32a4-49e7-8eef-5b4c7a7e7dd5.png)
 
 # Game Lab Beaker
-
-A handheld device for playing [Game Lab](https://www.gamelab.hackclub.com) games. In order to get a Beaker you have to contribute a quality game to the Beaker game library. Like a Gameboy you can only get by participating in building.
-
-WHY ARE WE BUILDING IT
-
-WHO IS IT FOR
+People learn best when they are making things that they are proud of, things that can share with others. We made https://github.com/hackclub/game-lab to help facilitate this style of learning. People who have never written code before can use it to get started right away changing real code and eventually making their own games. The Beaker is a handheld console meant to further enhance and popularize this style of learning; we will send them to technical teenagers who make games to run on one, and they will be able to show their games running on this device to anyone.
 
 WHAT IS BEING DONE
 
 GIVE TOUR OF REPO AND LINK TO OTHER RELEVANT REPOS
+https://github.com/hackclub/kaluma/tree/ced
+https://github.com/kaluma-project/kaluma
 
 # Parts
 
