@@ -6,8 +6,10 @@ People learn best when they are making things that they are proud of, things tha
 https://user-images.githubusercontent.com/25539554/169143730-565797fc-a0e5-44eb-96f9-02093b27bbcb.mp4
 
 Kaluma is a JS runtime implemented on top of JerryScript, which we've been extending with the parts of this project that require C optimization.
+
 our fork:
 https://github.com/hackclub/kaluma/tree/ced
+
 the original repo:
 https://github.com/kaluma-project/kaluma
 
