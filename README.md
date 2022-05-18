@@ -4,6 +4,14 @@
 
 A handheld device for playing [Game Lab](https://www.gamelab.hackclub.com) games. In order to get a Beaker you have to contribute a quality game to the Beaker game library. Like a Gameboy you can only get by participating in building.
 
+WHY ARE WE BUILDING IT
+
+WHO IS IT FOR
+
+WHAT IS BEING DONE
+
+GIVE TOUR OF REPO AND LINK TO OTHER RELEVANT REPOS
+
 # Parts
 
 - Raspberry Pi Pico RP2040 PID: 4864
