@@ -3,7 +3,8 @@
 # Game Lab Beaker
 People learn best when they are making things that they are proud of, things that can share with others. We made [gamelab](https://github.com/hackclub/game-lab) to help facilitate this style of learning. People who have never written code before can use it to get started right away changing real code and eventually making their own games. The Beaker is a handheld console meant to further enhance and popularize this style of learning; we will send them to technical teenagers who make games to run on one, and they will be able to show their games running on this device to anyone.
 
-WHAT IS BEING DONE
+https://user-images.githubusercontent.com/25539554/169143730-565797fc-a0e5-44eb-96f9-02093b27bbcb.mp4
+
 
 GIVE TOUR OF REPO AND LINK TO OTHER RELEVANT REPOS
 https://github.com/hackclub/kaluma/tree/ced
