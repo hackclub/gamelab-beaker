@@ -1,7 +1,7 @@
 ![image](https://user-images.githubusercontent.com/27078897/164332709-5167cbc6-32a4-49e7-8eef-5b4c7a7e7dd5.png)
 
 # Game Lab Beaker
-People learn best when they are making things that they are proud of, things that can share with others. We made (gamelab)[https://github.com/hackclub/game-lab] to help facilitate this style of learning. People who have never written code before can use it to get started right away changing real code and eventually making their own games. The Beaker is a handheld console meant to further enhance and popularize this style of learning; we will send them to technical teenagers who make games to run on one, and they will be able to show their games running on this device to anyone.
+People learn best when they are making things that they are proud of, things that can share with others. We made [gamelab](https://github.com/hackclub/game-lab) to help facilitate this style of learning. People who have never written code before can use it to get started right away changing real code and eventually making their own games. The Beaker is a handheld console meant to further enhance and popularize this style of learning; we will send them to technical teenagers who make games to run on one, and they will be able to show their games running on this device to anyone.
 
 WHAT IS BEING DONE
 
