@@ -5,10 +5,14 @@ People learn best when they are making things that they are proud of, things tha
 
 https://user-images.githubusercontent.com/25539554/169143730-565797fc-a0e5-44eb-96f9-02093b27bbcb.mp4
 
-
-GIVE TOUR OF REPO AND LINK TO OTHER RELEVANT REPOS
+Kaluma is a JS runtime implemented on top of JerryScript, which we've been extending with the parts of this project that require C optimization.
+our fork:
 https://github.com/hackclub/kaluma/tree/ced
+the original repo:
 https://github.com/kaluma-project/kaluma
+
+# The Repo
+We've been testing various runtimes and their hardware drivers as we make sure all of our components work and are configured correctly, hence `micropython_tests/` and `kaluma-tests/`. The file extension for the executables which run on these devices is `.uf2`, the `uf2/` folder contains the kaluma and micropython runtimes we've used to run the code in their respective files. This folder also contains `flash_nuke.uf2` which was compiled from a small C program designed to wipe the persistent memory on the chip, which is useful for recoverring from invalid states.
 
 # Parts
 
