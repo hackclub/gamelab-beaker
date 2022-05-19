@@ -25,6 +25,9 @@ const {
   getTile
 } = require("./engine.js");
 
+
+setScreenSize(500, 500*.8)
+
 setLegend({
   "p": sprite(`
 ................
@@ -47,7 +50,6 @@ setLegend({
     `),
   "w": sprite("b"),
   "b": sprite("0"),
-  "*": sprite("r"),
   "#": sprite(`
 ................
 ................
@@ -83,10 +85,13 @@ setLegend({
 ................
 ................
 ................
-    `)
+    `),
+    // x: combine("g", "h")
 })
 
-// setBackground("w")
+const water = "w";
+
+// setBackground(water)
 
 let level = 0;
 const levels = [
@@ -114,28 +119,48 @@ b........b
 b........b
 bbbbbbbbbb
 `
-];
+]
+
+
+setMap(levels[level]);
 
 setSolids(["p", "b", "#"])
 
 setZOrder(["d", "b","g", "r"])
 
-setPushables({ "p": ["#"] })
+setPushables({
+  "p": ["#"]
+})
 
-setMap(levels[level]);
+onInput("up", _ => {
+  getTile("p").y -= 1;
+})
 
-let countMatches;
-onInput("up",      _ => getTile("p").y -= 1);
-onInput("down",    _ => getTile("p").y += 1);
-onInput("left",    _ => getTile("p").x -= 1);
-onInput("right",   _ => getTile("p").x += 1);
+onInput("down", _ => {
+  getTile("p").y += 1;
+})
+
+onInput("left", _ => {
+  getTile("p").x -= 1;
+})
+
+onInput("right", _ => {
+  getTile("p").x += 1;
+})
+
+onInput("action0", _ => {
+  setMap(levels[level]);
+})
 
 afterInput(_ => {
 
   // this pattern could be improved
-  countMatches = swap(["#", "g"], "*");
+  const countMatches = swap(["#", "g"], "*");
   swap("*", ["#", "g"]);
 
-  if (countMatches === match("g").length)
-    setMap(levels[++level]);
-});
+  //if (countMatches === match("g").length) {
+  //  level++;
+  //  setMap(levels[level]);
+  //}
+
+})

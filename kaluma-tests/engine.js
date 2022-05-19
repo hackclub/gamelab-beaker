@@ -2,6 +2,7 @@ const { GPIO } = require("gpio");
 const { ST7735 } = require('st7735');
 const st7735 = new ST7735();
 
+let width = 0, height = 0;
 let legend = {};
 let img = { data: new Uint8Array(0), width: 0, height: 0 };
 let currentLevel = [];
@@ -51,7 +52,7 @@ const canMoveToPush = (tile, dx, dy) => {
 		const isPushable = (type in pushable) && pushable[type].includes(cell.type);
 
 		if (isSolid && !isPushable)
-		canMove = false;
+                    canMove = false;
 
 		if (isSolid && isPushable) {
 			canMove = canMove && canMoveToPush(cell, dx, dy);
@@ -165,10 +166,12 @@ const addTile = exports.addTile = (x, y, type) => { // could take array
 
 
 const dpad = {
-  up:    { last: 0, pin: new GPIO(0, INPUT_PULLUP) },
-  down:  { last: 0, pin: new GPIO(3, INPUT_PULLUP) },
-  left:  { last: 0, pin: new GPIO(2, INPUT_PULLUP) },
-  right: { last: 0, pin: new GPIO(1, INPUT_PULLUP) }
+  up:      { last: 0, pin: new GPIO(0, INPUT_PULLUP) },
+  down:    { last: 0, pin: new GPIO(3, INPUT_PULLUP) },
+  left:    { last: 0, pin: new GPIO(2, INPUT_PULLUP) },
+  right:   { last: 0, pin: new GPIO(1, INPUT_PULLUP) },
+  action0: { last: 0, pin: new GPIO(4, INPUT_PULLUP) },
+  action1: { last: 0, pin: new GPIO(5, INPUT_PULLUP) },
 };
 exports.onInput = function onInput(key, handler) {
 	if (!dpad[key]) throw new Error(
@@ -223,30 +226,32 @@ const fillImage = (function(x, y, w, h, buf) {
   digitalWrite(this.cs, HIGH); // deselect
 }).bind(st7735);
 
-const width = 128, height = 160;
-const screen = new Uint16Array(width * height);
-const { rfill, sprdraw } = global.require("native");
-setInterval(() => {
-	for (const [name, btn] of Object.entries(dpad)) {
-		const { pin, handler } = btn;
-		const now = pin.read();
-		if (handler && btn.last != now && !(btn.last = now))
-			handler();
-	}
-	afterInputFn();
+(() => {
+    const width = 128, height = 160;
+    const screen = new Uint16Array(width * height);
+    const { rfill, sprdraw } = global.require("native");
+    setInterval(() => {
+            for (const [name, btn] of Object.entries(dpad)) {
+                    const { pin, handler } = btn;
+                    const now = pin.read();
+                    if (handler && btn.last != now && !(btn.last = now))
+                            handler();
+            }
+            afterInputFn();
 
-	rfill(screen, gc.color16(255, 255, 255), width*height);
+            rfill(screen, gc.color16(255, 255, 255), width*height);
 
-    currentLevel
-      .sort((a, b) => zOrder.indexOf(b.type) - zOrder.indexOf(a.type))
-      .forEach(tile => {
+        currentLevel
+          .sort((a, b) => zOrder.indexOf(b.type) - zOrder.indexOf(a.type))
+          .forEach(tile => {
 
-		sprdraw(tile.img.data, tile.img.width, tile.img.height,
-		        screen, tile.y*16, tile.x*16);
-      });
+                    sprdraw(tile.img.data, tile.img.width, tile.img.height,
+                            screen, tile.y*16, tile.x*16);
+          });
 
-	fillImage(0, 0, width, height, new Uint8Array(screen.buffer));
-}, 1000/20);
+            fillImage(0, 0, width, height, new Uint8Array(screen.buffer));
+    }, 1000/20);
+})();
 
 const allEqual = arr => arr.every(val => val === arr[0]);
 exports.sprite = function sprite(string) { // returns image data
@@ -285,6 +290,88 @@ exports.sprite = function sprite(string) { // returns image data
 	return img = result;
 };
 
+function parsePattern(string) {
+    const parsedPattern = [];
+    const rows = string.trim().split("\n").map(x => x.trim());
+    const rowLengths = rows.map(x => x.length);
+    const isRect = allEqual(rowLengths)
+    if (!isRect) console.error("pattern must be rectangle");
+    const w = rows[0].length;
+    const h = rows.length;
+
+    for (let i = 0; i < w*h; i++) {
+        const type = string.split("").filter(x => x.match(/\S/))[i];
+        parsedPattern.push(type)
+    }
+
+    const result = { width: w, height: h, pattern: parsedPattern };
+
+    return result;
+}
+
+function matchPattern(patternData, testMap = {}) {
+    const { width: w, height: h, pattern } = patternData;
+
+    const grid = getGrid();
+
+    // if no cell with key then cell empty
+    for (let i = 0; i < width*height; i++) {
+        const x = i%width; 
+        const y = Math.floor(i/width); 
+        const key = `${x},${y}`;
+
+
+        if (!grid[key]) grid[key] = [{ x, y, type: "." }];
+    }
+
+    let allMatches = [];
+
+    for (let i = 0; i < width*height; i++) {
+      const x = i%width; 
+      const y = Math.floor(i/width); 
+
+      if (x + w > width || y + h > height) continue;
+      
+      let match = true;
+      let matches = [];
+      for (let j = 0; j < w*h; j++) {
+        const dx = j%w; 
+        const dy = Math.floor(j/w);
+        const type = pattern[j];
+        const key = `${x+dx},${y+dy}`;
+        
+        let testFn;
+        if (type in testMap) {
+          const val = testMap[type];
+          if (Array.isArray(val)) testFn = t => val.includes(t.type);
+          if (typeof val === "function") testFn = val
+        }
+
+        let matchValue = (testFn)
+            ? grid[key].find(testFn) // could take whole tile or tile type
+            : grid[key].find(t => t.type === type)
+
+        match = match && matchValue !== undefined;
+
+        matches.push(matchValue);
+      }
+
+      if (match) {
+        // if match doesn't have overlap with existing matches
+        const overlap = matches.some(t => allMatches.flat().includes(t));
+        if (!overlap) allMatches.push(matches);
+      }
+    }
+
+    return allMatches;
+}
+
+exports.match = function match(pattern, testMap = {}) {
+    const p = parsePattern(pattern);
+    const matches = matchPattern(p, testMap);
+    return matches;
+};
+
 const setScreenSize = exports.setScreenSize = function() {}
 exports.setLegend = function setLegend(newLegend) { legend = newLegend; }
 exports.setMap = function setMap(string) { // could have background and sprites
@@ -298,8 +385,8 @@ exports.setMap = function setMap(string) { // could have background and sprites
 		if (!isRect) console.error("Level must be rect.");
 	const w = rows[0].length;
 	const h = rows.length;
-	// width = w;
-	// height = h;
+	width = w;
+	height = h;
 
 	// scale the ctx based on aspect ratio of level
 	// tiles should always be square
